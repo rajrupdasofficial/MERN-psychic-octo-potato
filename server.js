@@ -1,8 +1,11 @@
+//initialzed dotenv package to use .env variables inside our project
+require('dotenv').config();
+
 // expressjs import
 const express = require('express')
 
 // custom logger middleware import
-const {logger}=require('./middleware/logger');
+const {logger,logEvents}=require('./middleware/logger');
 
 // custom error handler middleware
 const errorHandler = require('./middleware/errorHandler')
@@ -16,6 +19,14 @@ const corsOptions = require('./config/corsOptions')
 // 3rd party cookieParser
 const cookieParser=require('cookie-parser');
 
+//mongoose db conn initialization
+const connectDB = require('./config/dbConn')
+//mongoose initialization
+const mongoose = require('mongoose')
+
+// database connectivity intialization
+connectDB()
+
 // expressjs initialization
 const app= express()
 
@@ -24,6 +35,7 @@ const path = require('path')
 
 // PORT initialization
 const PORT  = process.env.PORT || 5500
+
 
 //logger initialization
 app.use(logger);
@@ -58,7 +70,13 @@ app.all('*',(req,res)=>{
 
 //initializing error handler middleware
 app.use(errorHandler);
-
-app.listen(PORT,()=>{
-    console.log(`server runnning on ${PORT}`)
+mongoose.connection.once('open',()=>{
+    console.log('Connected to db socket')
+    app.listen(PORT,()=>{
+        console.log(`server runnning on ${PORT}`)
+    })
+})
+mongoose.connection.on('error',err=>{
+    console.log(err)
+    logEvents(`${err.no}: ${err.code}\t${err.syscall}\t${err.hostname}`, 'mongoErrLog.log')
 })
