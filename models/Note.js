@@ -29,7 +29,7 @@ const noteSchema = new mongoose.Schema({
 
 
 
-notesSchema.plugin(AutoIncerement,{
+noteSchema.plugin(AutoIncrement,{
     inc_field : 'ticket',
     id:'ticketNums',
     start_seq:500,
