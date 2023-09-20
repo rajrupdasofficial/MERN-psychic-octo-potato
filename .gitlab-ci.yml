@@ -1,0 +1,24 @@
+stages:
+  - build
+  - docker-ci
+
+install_and _build:
+  image: node:lts
+  stage: build
+  script:
+    - npm ci
+    - npm install
+    - npm run build
+docker testing:
+  image: docker:20.10.16
+  stage: docker-ci
+  services:
+    - docker:20.10.16-dind
+  before_script:
+    - docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
+  script:
+    - docker build -t $IMAGE_TAG .
+    - docker images
+    - docker push $IMAGE_TAG
+    
+
