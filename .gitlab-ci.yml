@@ -8,7 +8,6 @@ install_and _build:
   script:
     - npm ci
     - npm install
-    - npm run build
 docker testing:
   image: docker:20.10.16
   stage: docker-ci
