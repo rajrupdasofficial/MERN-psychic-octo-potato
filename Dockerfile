@@ -19,7 +19,6 @@ COPY . .
 
 # Build your application (if necessary, replace with your actual build command)
 RUN npm ci
-RUN npm run build
 
 # Expose a port (if your application listens on a specific port)
 EXPOSE 5500
