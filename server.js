@@ -1,3 +1,4 @@
+// ** Imports start **
 //initialzed dotenv package to use .env variables inside our project
 require('dotenv').config();
 
@@ -24,6 +25,8 @@ const connectDB = require('./config/dbConn')
 //mongoose initialization
 const mongoose = require('mongoose')
 
+// ** Improts Ends **
+
 // database connectivity intialization
 connectDB()
 
@@ -49,11 +52,17 @@ app.use(express.json());
 // cookie parser 3rd party middleware
 app.use(cookieParser());
 
+
 //using static files with in the app if required | it's a middleware
 app.use('/', express.static(path.join(__dirname,'public')));
 // app.use('/', require('./'))
+
 // rootjs file handler initialization
 app.use('/',require('./routes/root'));
+
+//routing 
+app.use('/users',require('./routes/userRoutes'))
+
 // custom 404 error handler
 app.all('*',(req,res)=>{
     res.status(404);
@@ -76,6 +85,7 @@ mongoose.connection.once('open',()=>{
         console.log(`server runnning on ${PORT}`)
     })
 })
+//Mongodb connectivity error defined here with logger for further analytics
 mongoose.connection.on('error',err=>{
     console.log(err)
     logEvents(`${err.no}: ${err.code}\t${err.syscall}\t${err.hostname}`, 'mongoErrLog.log')
