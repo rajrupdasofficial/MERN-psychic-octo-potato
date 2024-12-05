@@ -13,7 +13,7 @@
   "license": "BSD-3-Clause",
   "dependencies": {
     "date-fns": "^2.30.0",
-    "express": "^4.21.1",
+    "express": "^4.21.2",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
